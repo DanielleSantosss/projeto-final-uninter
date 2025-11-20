@@ -1,73 +1,74 @@
-# Welcome to your Lovable project
+🏥 Sistema de Gestão de Pacientes
+Um sistema front-end moderno para cadastro e atendimento de pacientes, desenvolvido com React e TypeScript.
 
-## Project info
+✨ Sobre o Projeto
+Este projeto consiste em uma aplicação front-end para gestão de pacientes, focada nas funcionalidades de cadastro e atendimento. A aplicação simula o funcionamento completo do sistema, utilizando dados mockados para demonstração das funcionalidades.
 
-**URL**: https://lovable.dev/projects/1d2c23f7-ee71-462b-893d-dc2d68257345
+🎯 Funcionalidades Principais
+✅ Cadastro de pacientes
 
-## How can I edit this code?
+✅ Atendimento médico
 
-There are several ways of editing your application.
+✅ Interface moderna e responsiva
 
-**Use Lovable**
+✅ Dados simulados para demonstração
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/1d2c23f7-ee71-462b-893d-dc2d68257345) and start prompting.
+🛠 Tecnologias Utilizadas
+⚡ Vite - Build tool rápido e otimizado
 
-Changes made via Lovable will be committed automatically to this repo.
+📘 TypeScript - Tipagem estática para maior confiabilidade
 
-**Use your preferred IDE**
+⚛️ React - Biblioteca para interfaces de usuário
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+🎨 shadcn-ui - Componentes UI modernos e acessíveis
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+💨 Tailwind CSS - Framework CSS utilitário
 
-Follow these steps:
+🚀 Como Executar o Projeto
+Pré-requisitos
+Node.js (versão 16 ou superior)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+npm ou yarn
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Passos para instalação
+Clone o repositório
 
-# Step 3: Install the necessary dependencies.
-npm i
+bash
+git clone https://github.com/seu-usuario/nome-do-repositorio.git
+cd nome-do-repositorio
+Instale as dependências
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+bash
+npm install
+Execute o projeto em modo de desenvolvimento
+
+bash
 npm run dev
-```
+Acesse a aplicação
 
-**Edit a file directly in GitHub**
+⚠️ Observações Importantes
+🔄 Dados Mockados: Esta é uma versão de demonstração que utiliza dados simulados
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+🚫 Sem Backend: A aplicação não possui integração com backend real
 
-**Use GitHub Codespaces**
+🎭 Propósito Educacional: Desenvolvido para demonstrar funcionalidades front-end
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+📝 Scripts Disponíveis
+npm run dev - Inicia o servidor de desenvolvimento
 
-## What technologies are used for this project?
+npm run build - Gera build de produção
 
-This project is built with:
+npm run preview - Visualiza o build de produção localmente
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+npm run lint - Executa análise de código
 
-## How can I deploy this project?
+🎨 Características da Interface
+Design moderno e clean
 
-Simply open [Lovable](https://lovable.dev/projects/1d2c23f7-ee71-462b-893d-dc2d68257345) and click on Share -> Publish.
+Totalmente responsiva
 
-## Can I connect a custom domain to my Lovable project?
+Componentes acessíveis
 
-Yes, you can!
+Experiência de usuário intuitiva
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Desenvolvido com ❤️ usando as melhores práticas do ecossistema React
