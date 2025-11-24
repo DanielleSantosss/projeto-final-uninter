@@ -4,6 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { 
   Calendar, 
   Video, 
   FileText, 
@@ -14,15 +24,27 @@ import {
   Plus,
   Activity,
   Pill,
-  FileHeart
+  FileHeart,
+  X
 } from "lucide-react";
 import { toast } from "sonner";
+
+interface Appointment {
+  id: number;
+  specialty: string;
+  doctor: string;
+  date: string;
+  time: string;
+  type: string;
+  status: string;
+}
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [patientName] = useState("Paciente Silva");
-
-  const upcomingAppointments = [
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [appointmentToCancel, setAppointmentToCancel] = useState<Appointment | null>(null);
+  const [upcomingAppointments, setUpcomingAppointments] = useState<Appointment[]>([
     {
       id: 1,
       specialty: "Cardiologia",
@@ -41,7 +63,7 @@ const Dashboard = () => {
       type: "Telemedicina",
       status: "confirmed"
     },
-  ];
+  ]);
 
   const medicalHistory = [
     { id: 1, type: "Consulta", title: "Consulta Cardiológica", date: "10 Nov 2025" },
@@ -52,6 +74,22 @@ const Dashboard = () => {
   const handleLogout = () => {
     toast.success("Logout realizado com sucesso!");
     navigate("/auth");
+  };
+
+  const handleCancelAppointment = (appointment: Appointment) => {
+    setAppointmentToCancel(appointment);
+    setCancelDialogOpen(true);
+  };
+
+  const confirmCancelAppointment = () => {
+    if (appointmentToCancel) {
+      setUpcomingAppointments(prev => 
+        prev.filter(appointment => appointment.id !== appointmentToCancel.id)
+      );
+      toast.success(`Consulta com ${appointmentToCancel.doctor} cancelada com sucesso!`);
+      setCancelDialogOpen(false);
+      setAppointmentToCancel(null);
+    }
   };
 
   const getHistoryIcon = (type: string) => {
@@ -69,7 +107,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
-      {/* Header */}
       <header className="bg-card border-b shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -208,6 +245,14 @@ const Dashboard = () => {
                     <Button size="sm" variant="outline">
                       Detalhes
                     </Button>
+                    <Button 
+                      size="sm" 
+                      variant="destructive"
+                      onClick={() => handleCancelAppointment(appointment)}
+                    >
+                      <X className="w-4 h-4 mr-1" />
+                      Cancelar
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -216,13 +261,24 @@ const Dashboard = () => {
 
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-secondary" />
-                Histórico Clínico
-              </CardTitle>
-              <CardDescription>
-                Últimos registros médicos
-              </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-secondary" />
+                    Histórico Clínico
+                  </CardTitle>
+                  <CardDescription>
+                    Últimos registros médicos
+                  </CardDescription>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate("/historico-clinico")}
+                >
+                  Ver Histórico Completo
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-3">
               {medicalHistory.map((item) => (
@@ -239,7 +295,11 @@ const Dashboard = () => {
                       <p className="text-sm text-muted-foreground">{item.date}</p>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => navigate("/historico-clinico")}
+                  >
                     Ver
                   </Button>
                 </div>
@@ -248,6 +308,62 @@ const Dashboard = () => {
           </Card>
         </div>
       </main>
+
+      <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <X className="w-5 h-5 text-destructive" />
+              Cancelar Consulta
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              {appointmentToCancel && (
+                <div className="p-4 bg-muted/50 rounded-lg border">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                        {appointmentToCancel.specialty}
+                      </Badge>
+                      {appointmentToCancel.type === "Telemedicina" && (
+                        <Badge variant="outline" className="bg-secondary/10 text-secondary border-secondary/20">
+                          <Video className="w-3 h-3 mr-1" />
+                          Online
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="font-semibold text-foreground">{appointmentToCancel.doctor}</p>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {appointmentToCancel.date}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        {appointmentToCancel.time}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <p className="text-muted-foreground mt-4">
+                Tem certeza que deseja cancelar esta consulta? Esta ação não pode ser desfeita.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                📞 Se precisar reagendar, entre em contato conosco ou use a opção "Agendar Consulta".
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Manter Consulta</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmCancelAppointment}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              Sim, Cancelar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
