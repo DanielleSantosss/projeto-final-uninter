@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Auth from "@/pages/Auth";
 import { BrowserRouter } from "react-router-dom";
+import { toast } from "sonner";
 
 vi.mock("sonner", () => ({
   toast: { success: vi.fn() },
@@ -26,6 +27,42 @@ const renderAuth = () =>
 describe("Auth Page", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("realiza login corretamente", async () => {
+    vi.useFakeTimers();
+
+    renderAuth();
+
+    fireEvent.change(screen.getByLabelText("E-mail"), {
+      target: { value: "login@test.com" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Senha"), {
+      target: { value: "123456" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /entrar/i }));
+
+
+    expect(screen.getByText("Entrando...")).toBeInTheDocument();
+
+   
+    vi.runAllTimers();
+
+    expect(toast.success).toHaveBeenCalledWith("Login realizado com sucesso!");
+
+    expect(mockedNavigate).toHaveBeenCalledWith("/dashboard");
+  });
+
+  it("mostra campos obrigatórios no formulário", () => {
+    renderAuth();
+
+    const emailInput = screen.getByLabelText("E-mail");
+    const passwordInput = screen.getByLabelText("Senha");
+
+    expect(emailInput).toHaveAttribute("required");
+    expect(passwordInput).toHaveAttribute("required");
   });
 
   it("renderiza a página de login corretamente", () => {
